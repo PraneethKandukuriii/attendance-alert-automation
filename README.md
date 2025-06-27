@@ -29,7 +29,7 @@ This project is an automated workflow built with [n8n](https://n8n.io/) that mon
 
 | n8n Workflow Overview | Email Output |
 |-----------------------|--------------|
-| ![Workflow](./screenshots/flow-overview.png) | ![Email](./screenshots/email-preview.png) |
+| ![Workflow](./workflow_screenshots/flow-overview.png) | ![Email](./workflow_screenshots/email-preview.png) |
 
 ---
 
