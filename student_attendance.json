@@ -1,0 +1,143 @@
+{
+  "name": "student_attendance",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1Hz4nvSkafMj1-ZdILyOnngk_-f2e0mhT0wfOk8AtHHA",
+          "mode": "list",
+          "cachedResultName": "studentAttendance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Hz4nvSkafMj1-ZdILyOnngk_-f2e0mhT0wfOk8AtHHA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Hz4nvSkafMj1-ZdILyOnngk_-f2e0mhT0wfOk8AtHHA/edit#gid=0"
+        },
+        "event": "rowUpdate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d259da7e-01d7-4046-b579-dd43848a5721",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "XRgL0QsiJEf33geC",
+          "name": "Google Sheets Trigger account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1f36fd60-6a95-48d8-adfc-c5a501cc6659",
+              "leftValue": "={{ parseFloat($json[\"Student_attdence\"])}}",
+              "rightValue": 75,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "d2f94e59-4ad7-4c45-be9b-72f0f7b5909e",
+      "name": "If",
+      "executeOnce": false,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json[\"Student_email\"] }}",
+        "subject": "Subject: ⚠️ Low Attendance Alert - Action Required",
+        "message": "=<p>Hi {{ $json[\"Student_name\"] }},</p>\n<p>Your current attendance is <strong>{{ $json[\"Student_attdence\"] }}%</strong>, which is below the required minimum of 75%.</p>\n<p>Please make sure to attend upcoming classes regularly. As per the university policy, maintaining attendance below 75% may lead to penalties.</p>\n<p>If you believe this is a mistake, please contact the academic office for clarification.</p>\n<br>\n<p>Regards,<br>Attendance Monitoring System<br><em>(This is an automated message)</em></p>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        -100
+      ],
+      "id": "4ad00e11-d3ab-4abd-9fc4-047f7ce594e5",
+      "name": "Gmail",
+      "webhookId": "90080d97-9c94-42dd-9148-643f8ff9bcbf",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1UqS1fER5SEasZf8",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b5f41469-b9df-4fff-a9ff-aa570999c23c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e1e055f0863c41fa3e39f9809c248af575755fb9a64d1c1a7238b6b99c840e7"
+  },
+  "id": "GDDLKthEhFfOmJKT",
+  "tags": []
+}
